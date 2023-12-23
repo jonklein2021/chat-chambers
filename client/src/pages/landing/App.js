@@ -11,10 +11,10 @@ function App() {
   async function handleCreateRoom() {
     setLoading(true);
 
-    const res = await fetch('https://random-word-api.herokuapp.com/word?number=5&length=5');
+    const res = await fetch('https://random-word-api.herokuapp.com/word?number=5&length=4');
     const data = await res.json();
-    console.log(data.join('-'));
 
+    document.querySelector('.app-join-container').firstChild.value = data.join('-');
     setLoading(false);
   }
 
@@ -29,7 +29,10 @@ function App() {
         <div className='app-middle-container'>
           <div className='app-welcome-title'>Welcome!</div>
           <button onClick={handleCreateRoom}>Create a new room</button>
-          <button onClick={handleJoinRoom}>Join an existing room</button>
+          <div className='app-join-container'>
+            <input placeholder='Enter room code' />
+            <button className='app-join-button' onClick={handleJoinRoom}>Join</button>
+          </div>
         </div>
       </div>
     </>
