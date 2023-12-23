@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../../utils/socket';
+import useQuery from '../../hooks/useQuery';
 
-function Room({ match }) {
+function Room() {
     const [room, setRoom] = useState(null);
     const [message, setMessage] = useState(null);
 
+    const query = useQuery();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!match) {
+        const room = query.get('id');
+        if (!room) {
             navigate('/404');
             return;
         }
         
         socket.connect();
+        socket.emit('join-room', room);
 
-        setRoom(match.params.room);
+        setRoom(room);
 
-    }, [match, navigate]);
+    }, [navigate, query]);
 
     function handleSend() {
         if (message) socket.emit('send-message', message);

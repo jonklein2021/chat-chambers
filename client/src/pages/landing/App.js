@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../../components/loading/Loading';
 
 function App() {
+  const [roomCode, setRoomCode] = useState(null);
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
@@ -15,11 +16,15 @@ function App() {
     const data = await res.json();
 
     document.querySelector('.app-join-container').firstChild.value = data.join('-');
+    setRoomCode(data.join('-'));
+    
     setLoading(false);
   }
 
   function handleJoinRoom() {
-    console.log('handleJoinRoom');
+    if (roomCode) {
+      navigate('/room?id=' + roomCode);
+    }
   }
 
   return (
@@ -30,7 +35,7 @@ function App() {
           <div className='app-welcome-title'>Welcome!</div>
           <button onClick={handleCreateRoom}>Create a new room</button>
           <div className='app-join-container'>
-            <input placeholder='Enter room code' />
+            <input placeholder='Enter room code' onChange={e => setRoomCode(e.target.value)} />
             <button className='app-join-button' onClick={handleJoinRoom}>Join</button>
           </div>
         </div>

@@ -11,5 +11,9 @@ io.on("connection", socket => {
 
     socket.on('send-message', message => {
         console.log(`${socket.id}: ${message}`);
-    })
+    });
+
+    socket.on('join-room', room => {
+        socket.join(room);
+    });
 });
