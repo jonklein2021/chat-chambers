@@ -33,8 +33,12 @@ function Room() {
   function handleSend(e) {
     e.preventDefault();
     if (newMessage) {
+      // send message to socket
       socket.emit('send-message', room, newMessage);
+
+      // clear new message form
       document.querySelector('.room-send-container').firstChild.value = '';
+      setNewMessage(null);
 
       // add sender's new message DOM
       setMessages(prev => [...prev, { sender: 'self', msg: newMessage }]);

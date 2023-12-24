@@ -30,6 +30,11 @@ function App() {
       return;
     }
 
+    if (roomCode.length > 25) {
+      setStatus('Code must be 25 characters long or fewer');
+      return;
+    }
+
     if (encodeURI(roomCode) !== roomCode) {
       setStatus('Special symbols not allowed');
       return;
@@ -46,7 +51,7 @@ function App() {
         <div className='app-welcome-title'>Welcome!</div>
         <form className='app-join-container' onSubmit={handleJoinRoom}>
           <input placeholder='Enter room code' onChange={e => setRoomCode(e.target.value)} />
-          <button type='submit' className='app-join-button'>Join</button>
+          <button type='submit' disabled={!roomCode} className='app-join-button'>Join</button>
         </form>
         <p>Need some inspiration? Click <b className='app-gen-name' onClick={handleCreateRoom}>me!</b></p>
       </div>
