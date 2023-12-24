@@ -1,0 +1,82 @@
+.room {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: 12pt;
+}
+
+.room-label {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+.room-middle-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
+
+	width: 55vw;
+	height: 100%;
+
+	background-color: #18141c;
+	padding: 0 4em;
+}
+
+.room-messages-container {
+	display: flex;
+	flex-direction: column;
+	background-color: #a6b5d2;
+	border-radius: 0 0 10px 10px;
+
+    overflow: scroll;
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+
+	width: 100%;
+	height: 100%;
+}
+
+.room-messages-container::-webkit-scrollbar {
+	display: none;
+}
+
+.room-send-container {
+	display: flex;
+	justify-content: stretch;
+
+	width: 100%;
+}
+
+.room-send-container > input {
+	width: 100%;
+	border-radius: 10px;
+	font-size: 1.5rem;
+	border: 1px solid black;
+	background-color: #f2f2f2;
+	padding: 5px 10px;
+	transition: 0.3s;
+	margin-bottom: 1em;
+}
+
+.room-send-container > button {
+	border-radius: 10px;
+	font-size: 1.5rem;
+	border: 1px solid black;
+	background-color: #a6b5d2;
+	padding: 5px 10px;
+	transition: 0.3s;
+	margin-bottom: 1em;
+}
+
+.room-send-container button:hover {
+	cursor: pointer;
+	box-shadow: 10px 10px 80px 0px #5a7ebf;
+}

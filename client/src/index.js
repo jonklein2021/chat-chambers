@@ -9,7 +9,7 @@ import NotFound from './pages/404/NotFound';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
       <Routes>
         <Route path="/" element={<App />} />
@@ -18,5 +18,5 @@ root.render(
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

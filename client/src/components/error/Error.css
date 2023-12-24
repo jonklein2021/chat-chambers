@@ -1,0 +1,25 @@
+.error-message {
+    position: relative;
+
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+    
+	padding: 10px;
+	margin: 10px 0;
+	
+    width: 100%;
+    color: red;
+	border: 1px solid darkred;
+	border-radius: 5px;
+}
+
+.close-button {
+	cursor: pointer;
+    position: absolute;
+    right: 10px;
+	background-color: transparent;
+	color: darkred;
+	border: none;
+}
