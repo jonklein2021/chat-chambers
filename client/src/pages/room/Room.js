@@ -25,18 +25,19 @@ function Room() {
     setRoom(room);
 
     socket.on('load-message', (sender, msg) => {
-      setMessages(prev => [...prev, {sender, msg}]);
+      setMessages(prev => [...prev, { sender, msg }]);
     });
 
   }, [navigate, query]);
 
-  function handleSend() {
+  function handleSend(e) {
+    e.preventDefault();
     if (newMessage) {
       socket.emit('send-message', room, newMessage);
-      document.querySelector('.room-send-container > button').value = '';
+      document.querySelector('.room-send-container').firstChild.value = '';
 
-      // add to this DOM
-      setMessages(prev => [...prev, {sender: 'self', msg: newMessage}]);
+      // add sender's new message DOM
+      setMessages(prev => [...prev, { sender: 'self', msg: newMessage }]);
     }
   }
 
@@ -45,14 +46,14 @@ function Room() {
       <p className='room-label'>Room: {room}</p>
       <div className='room-middle-container'>
         <div className='room-messages-container'>
-          {messages.map(m => 
+          {messages.map(m =>
             <Message key={messages.indexOf(m)} sender={m.sender} content={m.msg} />
           )}
         </div>
-        <div className='room-send-container'>
+        <form className='room-send-container' onSubmit={e => handleSend(e)}>
           <input placeholder='New Message...' onChange={e => setNewMessage(e.target.value)} />
-          <button onClick={handleSend}>Submit</button>
-        </div>
+          <button type='submit'>Submit</button>
+        </form>
       </div>
     </div>
   );

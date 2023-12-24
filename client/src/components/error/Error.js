@@ -9,14 +9,14 @@ function Error({ message, onClose }) {
     if (onClose) onClose();
   };
 
-  return isVisible ? (
+  if (!isVisible) return null;
+
+  return (
     <div className="error-message">
       <strong>Error: {message}</strong>
-      <button className="close-button" onClick={handleClose}>
-        &times;
-      </button>
+      <button className="close-button" onClick={handleClose}>&times;</button>
     </div>
-  ) : null;
+  )
 };
 
 export default Error;

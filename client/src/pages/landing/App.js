@@ -7,7 +7,7 @@ import Error from '../../components/error/Error';
 function App() {
   const [roomCode, setRoomCode] = useState(null);
   const [status, setStatus] = useState(null);
-  
+
   const navigate = useNavigate();
 
   async function handleCreateRoom() {
@@ -22,7 +22,9 @@ function App() {
     setStatus(null);
   }
 
-  function handleJoinRoom() {
+  function handleJoinRoom(e) {
+    e.preventDefault();
+
     if (!roomCode) {
       setStatus('No room code provided');
       return;
@@ -37,20 +39,18 @@ function App() {
   }
 
   return (
-    <>
+    <div className='app'>
       {status === 'loading' && <Loading />}
       {status !== 'loading' && status && <Error message={status} onClose={() => setStatus(null)} />}
-      <div className='app'>
-        <div className='app-middle-container'>
-          <div className='app-welcome-title'>Welcome!</div>
-          <div className='app-join-container'>
-            <input placeholder='Enter room code' onChange={e => setRoomCode(e.target.value)} />
-            <button className='app-join-button' onClick={handleJoinRoom}>Join</button>
-          </div>
-          <p>Need some inspiration? Click <b className='app-gen-name' onClick={handleCreateRoom}>me!</b></p>
-        </div>
+      <div className='app-middle-container'>
+        <div className='app-welcome-title'>Welcome!</div>
+        <form className='app-join-container' onSubmit={handleJoinRoom}>
+          <input placeholder='Enter room code' onChange={e => setRoomCode(e.target.value)} />
+          <button type='submit' className='app-join-button'>Join</button>
+        </form>
+        <p>Need some inspiration? Click <b className='app-gen-name' onClick={handleCreateRoom}>me!</b></p>
       </div>
-    </>
+    </div>
   );
 }
 

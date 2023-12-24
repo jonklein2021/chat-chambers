@@ -57,7 +57,7 @@
 
 .room-send-container > input {
 	width: 100%;
-	border-radius: 10px;
+	border-radius: 10px 0 0 10px;
 	font-size: 1.5rem;
 	border: 1px solid black;
 	background-color: #f2f2f2;
@@ -67,7 +67,7 @@
 }
 
 .room-send-container > button {
-	border-radius: 10px;
+	border-radius: 0 10px 10px 0;
 	font-size: 1.5rem;
 	border: 1px solid black;
 	background-color: #a6b5d2;
