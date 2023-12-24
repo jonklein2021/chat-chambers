@@ -9,7 +9,7 @@
 .room-label {
 	position: absolute;
 	top: 10px;
-	left: 10px;
+	left: 20px;
 }
 
 .room-middle-container {
@@ -36,7 +36,7 @@
 	background-color: #18141c;
 	border-radius: 0 0 10px 10px;
 
-    overflow: scroll;
+	overflow: scroll;
 	-ms-overflow-style: none; /* make scrollbar invisible on IE and Edge */
 	scrollbar-width: none; /* make scrollbar invisible on Firefox */
 
@@ -76,7 +76,7 @@
 	margin-bottom: 1em;
 }
 
-.room-send-container button:hover {
+.room-send-container button:hover:not(:disabled) {
 	cursor: pointer;
 	box-shadow: 10px 10px 80px 0px #5a7ebf;
 }

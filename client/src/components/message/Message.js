@@ -4,7 +4,7 @@ import './Message.css';
 function Message({ sender, content }) {
   if (sender === 'self') return (
     <div className='message-content' style={{
-      backgroundColor: '#5a7ebf',
+      backgroundColor: '#218aff',
       color: '#f2f2f2',
       alignSelf: 'flex-end'
     }}>

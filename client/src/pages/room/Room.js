@@ -4,11 +4,16 @@ import { socket } from '../../utils/socket';
 import useQuery from '../../hooks/useQuery';
 import './Room.css';
 import Message from '../../components/message/Message';
+import Modal from '../../components/modal/Modal';
 
 function Room() {
   const [room, setRoom] = useState(null);
   const [newMessage, setNewMessage] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [username, setUsername] = useState(null);
+
+  // modal state
+  const [modalOpen, setModalOpen] = useState(true);
 
   const query = useQuery();
   const navigate = useNavigate();
@@ -32,32 +37,38 @@ function Room() {
 
   function handleSend(e) {
     e.preventDefault();
-    if (newMessage) {
-      // send message to socket
-      socket.emit('send-message', room, newMessage);
+    if (!newMessage) return; 
 
-      // clear new message form
-      document.querySelector('.room-send-container').firstChild.value = '';
-      setNewMessage(null);
+    // send message to socket
+    socket.emit('send-message', room, username, newMessage);
 
-      // add sender's new message DOM
-      setMessages(prev => [...prev, { sender: 'self', msg: newMessage }]);
-    }
+    // clear new message form
+    document.querySelector('.room-send-container').firstChild.value = '';
+    setNewMessage(null);
+
+    // add sender's new message DOM
+    setMessages(prev => [...prev, { sender: 'self', msg: newMessage }]);
   }
 
   return (
     <div className='room'>
-      <p className='room-label'>Room: {room}</p>
+      <Modal isOpen={modalOpen} onClose={setModalOpen} setUsername={setUsername} />
+      <div className="room-label">
+        <p>Room: {room}</p>
+        {username && <p>Username: {username}</p>}
+      </div>
       <div className='room-middle-container'>
         <div className='room-messages-container'>
           {messages.map(m =>
             <Message key={messages.indexOf(m)} sender={m.sender} content={m.msg} />
           )}
         </div>
-        <form className='room-send-container' onSubmit={e => handleSend(e)}>
-          <input placeholder='New Message...' onChange={e => setNewMessage(e.target.value)} />
-          <button type='submit'>Submit</button>
-        </form>
+        {username &&
+          <form className='room-send-container' onSubmit={e => handleSend(e)}>
+            <input placeholder='New Message...' onChange={e => setNewMessage(e.target.value)} />
+            <button type='submit' disabled={!newMessage}>Submit</button>
+          </form>
+        }
       </div>
     </div>
   );
