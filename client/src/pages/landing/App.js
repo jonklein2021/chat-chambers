@@ -1,8 +1,13 @@
+// react
 import React, { useState } from 'react';
-import './App.css';
 import { useNavigate } from 'react-router-dom';
+
+// components
 import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
+
+// styles
+import './App.css';
 
 function App() {
   const [roomCode, setRoomCode] = useState(null);
@@ -40,7 +45,7 @@ function App() {
       return;
     }
 
-    navigate('/room?id=' + roomCode);
+    navigate('/rooms/' + roomCode);
   }
 
   return (

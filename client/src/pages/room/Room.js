@@ -1,40 +1,43 @@
+// react
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
+// socket.io
 import { socket } from '../../utils/socket';
-import useQuery from '../../hooks/useQuery';
-import './Room.css';
+
+// components
 import Message from '../../components/message/Message';
 import Modal from '../../components/modal/Modal';
 
+// styles
+import './Room.css';
+
 function Room() {
-  const [room, setRoom] = useState(null);
+  const { room } = useParams();
+
   const [newMessage, setNewMessage] = useState(null);
   const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState(null);
+  
+  const navigate = useNavigate();
 
   // modal state
   const [modalOpen, setModalOpen] = useState(true);
-
-  const query = useQuery();
-  const navigate = useNavigate();
-
+  
   useEffect(() => {
-    const room = query.get('id');
     if (!room) {
       navigate('/404');
       return;
     }
-
+    
     socket.connect();
     socket.emit('join-room', room);
-
-    setRoom(room);
 
     socket.on('load-message', (sender, msg) => {
       setMessages(prev => [...prev, { sender, msg }]);
     });
 
-  }, [navigate, query]);
+  }, [navigate, room]);
 
   function handleSend(e) {
     e.preventDefault();
@@ -65,7 +68,7 @@ function Room() {
           )}
         </div>
         {username &&
-          <form className='room-send-container' onSubmit={e => handleSend(e)}>
+          <form className='room-send-container' onSubmit={handleSend}>
             <input placeholder='New Message...' onChange={e => setNewMessage(e.target.value)} />
             <button type='submit' disabled={!newMessage}>Send</button>
           </form>

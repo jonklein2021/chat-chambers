@@ -1,6 +1,11 @@
+// react
 import React, { useState } from 'react';
-import './Modal.css';
+
+// error component
 import Error from '../error/Error';
+
+// styles
+import './Modal.css';
 
 function Modal({ isOpen, onClose, socket, room, setUsername }) {
   const [newUsername, setNewUsername] = useState(null);

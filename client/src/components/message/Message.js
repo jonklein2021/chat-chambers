@@ -1,4 +1,7 @@
+// react
 import React from 'react';
+
+// styles
 import './Message.css';
 
 function Message({ sender, content }) {
