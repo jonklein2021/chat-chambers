@@ -31,12 +31,12 @@ function App() {
     }
 
     if (roomCode.length > 25) {
-      setStatus('Code must be 25 characters long or fewer');
+      setStatus('Room code must be of 25 characters or fewer');
       return;
     }
 
     if (encodeURI(roomCode) !== roomCode) {
-      setStatus('Special symbols not allowed');
+      setStatus('Special characters and spaces not allowed');
       return;
     }
 

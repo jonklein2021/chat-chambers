@@ -27,6 +27,7 @@ function Room() {
 
     socket.connect();
     socket.emit('join-room', room);
+
     setRoom(room);
 
     socket.on('load-message', (sender, msg) => {
@@ -52,7 +53,7 @@ function Room() {
 
   return (
     <div className='room'>
-      <Modal isOpen={modalOpen} onClose={setModalOpen} setUsername={setUsername} />
+      <Modal isOpen={modalOpen} onClose={setModalOpen} socket={socket} room={room} setUsername={setUsername} />
       <div className="room-label">
         <p>Room: {room}</p>
         {username && <p>Username: {username}</p>}
@@ -66,7 +67,7 @@ function Room() {
         {username &&
           <form className='room-send-container' onSubmit={e => handleSend(e)}>
             <input placeholder='New Message...' onChange={e => setNewMessage(e.target.value)} />
-            <button type='submit' disabled={!newMessage}>Submit</button>
+            <button type='submit' disabled={!newMessage}>Send</button>
           </form>
         }
       </div>
