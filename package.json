@@ -2,8 +2,9 @@
   "scripts": {
     "start": "concurrently \"npm:prod-*\"",
     "dev": "concurrently \"npm:dev-*\"",
-    "prod-server": "cd server && npm i && npm start",
+    "cp-webpack" : "cp client/webpack.config.js client/node_modules/react-scripts/config",
     "prod-client": "cd client && npm i && npm start",
+    "prod-server": "cd server && npm i && npm start",
     "dev-server": "cd server && npm run dev",
     "dev-client": "cd client && npm start"
   },
