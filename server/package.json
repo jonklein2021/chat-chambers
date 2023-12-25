@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "nodemon": "^3.0.2",
     "socket.io": "^4.7.2"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node server.js",
     "dev": "npx nodemon server.js"
