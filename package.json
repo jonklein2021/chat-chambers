@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "start": "concurrently \"npm:prod-*\"",
+    "dev": "concurrently \"npm:dev-*\"",
+    "prod-server": "cd server && npm i && npm start",
+    "prod-client": "cd client && npm i && npm start",
+    "dev-server": "cd server && npm run dev",
+    "dev-client": "cd client && npm start"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
