@@ -3,7 +3,7 @@
     "start": "concurrently \"npm:prod-*\"",
     "dev": "concurrently \"npm:dev-*\"",
     "cp-webpack": "cpx \"client/webpack.config.js\" client/node_modules/react-scripts/config",
-    "prod-client": "cd client && npm i && cpy webpack.config.js node_modules/react-scripts/config && npm start",
+    "prod-client": "cd client && npm i && cpy webpack.config.js node_modules/react-scripts/config && npm run build",
     "prod-server": "cd server && npm i && npm start",
     "dev-server": "cd server && npm run dev",
     "dev-client": "cd client && npm start"
