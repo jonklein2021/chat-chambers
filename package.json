@@ -2,14 +2,14 @@
   "scripts": {
     "start": "concurrently \"npm:prod-*\"",
     "dev": "concurrently \"npm:dev-*\"",
-    "cp-webpack": "cpx client/webpack.config.js client/node_modules/react-scripts/config",
-    "prod-client": "cd client && npm i && cpx client/webpack.config.js client/node_modules/react-scripts/config && npm start",
+    "cp-webpack": "cpx \"client/webpack.config.js\" client/node_modules/react-scripts/config",
+    "prod-client": "cd client && npm i && cpy webpack.config.js node_modules/react-scripts/config && npm start",
     "prod-server": "cd server && npm i && npm start",
     "dev-server": "cd server && npm run dev",
     "dev-client": "cd client && npm start"
   },
   "dependencies": {
     "concurrently": "^8.2.2",
-    "cpx": "^1.5.0"
+    "cpy-cli": "^5.0.0"
   }
 }
