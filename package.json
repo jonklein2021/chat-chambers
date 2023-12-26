@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "concurrently \"npm:prod-*\"",
+    "start": "concurrently \"npm:start-*\"",
     "build": "concurrently \"npm:prod-*\"",
     "dev": "concurrently \"npm:dev-*\"",
 

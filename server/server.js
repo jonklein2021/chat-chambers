@@ -1,7 +1,8 @@
 require('dotenv');
 
 const io = require('socket.io')(process.env.PORT || 9000, {
-    cors: { origin: ['http://i-socket.netlify.app:3000'] }
+    // cors: { origin: ['http://i-socket.netlify.app:3000'] }
+    cors: { origin: ['http://localhost:3000'] }
 });
 
 io.on("connection", socket => {
