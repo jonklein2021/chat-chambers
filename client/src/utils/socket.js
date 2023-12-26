@@ -3,6 +3,6 @@ require('dotenv');
 
 // "undefined" means the URL will be computed from the `window.location` object
 // const URL = process.env.NODE_ENVIRONMENT === 'production' ? process.env.SERVER_URL : 'http://localhost:9000';
-const URL = process.env.SERVER_URL;
+const URL = 'https://i-socket-server.jontronwonton.repl.co/';
 
 export const socket = io(URL, { autoConnect: false });
