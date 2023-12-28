@@ -20,7 +20,7 @@ function Room() {
   const [newMessage, setNewMessage] = useState(null);
   const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState(null);
-  const [papyrusMode, setPapyrusMode] = useState(false);
+  // const [papyrusMode, setPapyrusMode] = useState(false);
 
   const inputRef = useRef(null);
   
