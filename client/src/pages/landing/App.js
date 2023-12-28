@@ -1,5 +1,5 @@
 // react
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // components
@@ -13,6 +13,8 @@ function App() {
   const [roomCode, setRoomCode] = useState(null);
   const [status, setStatus] = useState(null);
 
+  const inputRef = useRef(null);
+
   const navigate = useNavigate();
 
   async function handleCreateRoom() {
@@ -21,7 +23,7 @@ function App() {
     const res = await fetch('https://random-word-api.herokuapp.com/word?number=5&length=4');
     const data = await res.json();
 
-    document.querySelector('.app-join-container').firstChild.value = data.join('-');
+    inputRef.current.value = data.join('-'); // update input field
     setRoomCode(data.join('-'));
 
     setStatus(null);
@@ -55,7 +57,7 @@ function App() {
       <div className='app-middle-container'>
         <div className='app-welcome-title'>Welcome!</div>
         <form className='app-join-container' onSubmit={handleJoinRoom}>
-          <input placeholder='Enter room code' onChange={e => setRoomCode(e.target.value)} />
+          <input placeholder='Enter room code' ref={inputRef} onChange={e => setRoomCode(e.target.value)} />
           <button type='submit' disabled={!roomCode} className='app-join-button'>Join</button>
         </form>
         <p>Need some inspiration? Click <b className='app-gen-name' onClick={handleCreateRoom}>me!</b></p>

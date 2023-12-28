@@ -1,4 +1,4 @@
-.modal-overlay {
+.username-modal-overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -13,7 +13,7 @@
 	background: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+.username-modal-content {
 	display: flex;
 	flex-direction: column;
     align-items: center;
@@ -27,14 +27,14 @@
 	padding: 20px;
 }
 
-.modal-form {
+.username-modal-form {
 	display: flex;
 	justify-content: center;
 
 	width: 100%;
 }
 
-.modal-form > input {
+.username-modal-form > input {
 	width: 50%;
 	border-radius: 20px 0 0 20px;
 	font-size: 1.5rem;
@@ -45,7 +45,7 @@
 	margin-bottom: 1em;
 }
 
-.modal-form > button {
+.username-modal-form > button {
 	border-radius: 0 20px 20px 0;
 	font-size: 1.5rem;
 	border: 1px solid black;
@@ -55,7 +55,7 @@
 	margin-bottom: 1em;
 }
 
-.modal-form > button:hover:not(:disabled) {
+.username-modal-form > button:hover:not(:disabled) {
 	cursor: pointer;
 	box-shadow: 10px 10px 80px 0px #5a7ebf;
 }

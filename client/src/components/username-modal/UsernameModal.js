@@ -5,9 +5,9 @@ import React, { useState } from 'react';
 import Error from '../error/Error';
 
 // styles
-import './Modal.css';
+import './UsernameModal.css';
 
-function Modal({ isOpen, onClose, socket, room, setUsername }) {
+function UsernameModal({ isOpen, onClose, socket, room, setUsername }) {
   const [newUsername, setNewUsername] = useState(null);
   const [error, setError] = useState(null);
 
@@ -39,11 +39,11 @@ function Modal({ isOpen, onClose, socket, room, setUsername }) {
   return (
     <>
       {isOpen && (
-        <div className='modal-overlay'>
+        <div className='username-modal-overlay'>
           {error && <Error message={error} onClose={() => setError(null)} />}
-          <div className='modal-content'>
+          <div className='username-modal-content'>
             <h1>What's your name?</h1>
-            <form className='modal-form' onSubmit={handleSubmit}>
+            <form className='username-modal-form' onSubmit={handleSubmit}>
               <input placeholder='Username...' onChange={e => setNewUsername(e.target.value)} />
               <button type='submit' disabled={!newUsername}>Confirm</button>
             </form>
@@ -54,4 +54,4 @@ function Modal({ isOpen, onClose, socket, room, setUsername }) {
   );
 };
 
-export default Modal;
+export default UsernameModal;
