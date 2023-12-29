@@ -8,7 +8,7 @@ import Toggle from '../toggle/Toggle';
 // styles
 import './SettingsModal.css';
 
-function SettingsModal({ isOpen, onClose }) {
+function SettingsModal({ isOpen, onClose, state, setState }) {
   const [error, setError] = useState(null);
 
   return (
@@ -21,7 +21,7 @@ function SettingsModal({ isOpen, onClose }) {
           <div className='settings-modal-content'>
             <div className='settings-modal-papyrus-container'>
               Papyrus mode
-              <Toggle />
+              <Toggle state={state} setState={setState} />
             </div>
           </div>
         </div>

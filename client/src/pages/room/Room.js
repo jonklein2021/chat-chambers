@@ -20,7 +20,7 @@ function Room() {
   const [newMessage, setNewMessage] = useState(null);
   const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState(null);
-  // const [papyrusMode, setPapyrusMode] = useState(false);
+  const [papyrusMode, setPapyrusMode] = useState(false);
 
   const inputRef = useRef(null);
   
@@ -45,6 +45,14 @@ function Room() {
 
   }, [navigate, room]);
 
+  useEffect(() => {
+    if (papyrusMode) {
+      document.querySelector('body').classList.add('papyrus-mode');
+    } else {
+      document.querySelector('body').classList.remove('papyrus-mode');
+    }
+  }, [papyrusMode]);
+
   function handleSend(e) {
     e.preventDefault();
     if (!newMessage) return; 
@@ -63,7 +71,7 @@ function Room() {
   return (
     <div className='room'>
       <UsernameModal isOpen={usernameModalOpen} onClose={setUsernameModalOpen} socket={socket} room={room} setUsername={setUsername} />
-      <SettingsModal isOpen={settingsModalOpen} onClose={setSettingsModalOpen} />
+      <SettingsModal isOpen={settingsModalOpen} onClose={setSettingsModalOpen} state={papyrusMode} setState={setPapyrusMode} />
       <div className='room-left-container'>
         <div className='room-label'>
           <p>Room: {room}</p>

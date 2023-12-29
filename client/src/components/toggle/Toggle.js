@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './Toggle.css';
 
-function Toggle() {
-  const [isOn, setIsOn] = useState(false);
+function Toggle({ state, setState }) {
+  const [isOn, setIsOn] = useState(state);
 
   function handleToggle() {
+    setState(!isOn);
     setIsOn(!isOn);
   };
-
-  useEffect(() => {
-    if (isOn) {
-      document.querySelector('body').classList.add('papyrus-mode');
-    } else {
-      document.querySelector('body').classList.remove('papyrus-mode');
-    }
-  }, [isOn]);
 
   return (
     <div className={`toggle-container ${isOn ? 'on' : ''}`} onClick={handleToggle}>
