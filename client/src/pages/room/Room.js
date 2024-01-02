@@ -20,6 +20,8 @@ function Room() {
   const [newMessage, setNewMessage] = useState(null);
   const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState(null);
+  const [numMembers, setNumMembers] = useState(0);
+  const [log, setLog] = useState([]);
   const [papyrusMode, setPapyrusMode] = useState(false);
 
   const inputRef = useRef(null);
@@ -29,22 +31,45 @@ function Room() {
   // modal states
   const [usernameModalOpen, setUsernameModalOpen] = useState(true);
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
-  
+
+  // listen for username and room changes here
   useEffect(() => {
     if (!room) {
       navigate('/404');
       return;
     }
     
+    // get current number of members
+    socket.emit('request-members', room);
+    
+    if (username) socket.emit('join-room', room);
+    
+  }, [navigate, room, username]);
+  
+  // initialize listeners
+  useEffect(() => {
     socket.connect();
-    socket.emit('join-room', room);
-
+    
     socket.on('load-message', (sender, msg) => {
       setMessages(prev => [...prev, { sender, msg }]);
     });
+    
+    socket.on('update-members', length => {
+      setNumMembers(length);
+      console.log(length);
+    });    
 
-  }, [navigate, room]);
+    socket.on('member-join', username => {
+      if (username) setLog(oldLog => [...oldLog, username + ' joined the room'])
+    });
+    
+    socket.on('member-leave', username => {
+      if (username) setLog(oldLog => [...oldLog, username + ' left the room'])
+    });
 
+  }, []);
+
+  // listen for setting changes
   useEffect(() => {
     if (papyrusMode) {
       document.querySelector('body').classList.add('papyrus-mode');
@@ -73,8 +98,9 @@ function Room() {
       <UsernameModal isOpen={usernameModalOpen} onClose={setUsernameModalOpen} socket={socket} room={room} setUsername={setUsername} />
       <SettingsModal isOpen={settingsModalOpen} onClose={setSettingsModalOpen} state={papyrusMode} setState={setPapyrusMode} />
       <div className='room-left-container'>
-        <div className='room-label'>
+        <div className='room-top-left-label'>
           <p>Room: {room}</p>
+          {username && <p># of members: {numMembers}</p>} {/* TODO: Get this to show and update on page load */}
           {username && <p>Username: {username}</p>}
         </div>
         {username && <SettingsButton onClick={() => setSettingsModalOpen(true)} />}
@@ -92,8 +118,10 @@ function Room() {
           </form>
         }
       </div>
-      <div className='room-right-container'>
-        
+      <div className='room-right-container' onClick={() => console.log(log)}>
+        {log.map(msg => 
+          <p key={log.indexOf(msg)}>{msg}</p>
+        )}
       </div>
     </div>
   );
