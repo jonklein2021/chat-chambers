@@ -36,21 +36,41 @@
 }
 
 .room-right-container {
-	width: 20%;
-}
-
-.room-messages-container {
 	display: flex;
 	flex-direction: column;
-	background-color: #18141c;
-	border-radius: 0 0 10px 10px;
 
 	overflow: scroll;
 	-ms-overflow-style: none; /* make scrollbar invisible on IE and Edge */
 	scrollbar-width: none; /* make scrollbar invisible on Firefox */
 
+	width: 20%;
+	height: 100%;
+
+	padding: 10px;
+}
+
+.room-right-container::-webkit-scrollbar {
+	display: none;
+}
+
+.room-right-container p {
+	font-style: italic;
+	margin-bottom: 0;
+}
+
+.room-messages-container {
+	display: flex;
+	flex-direction: column;
+	
+	overflow: scroll;
+	-ms-overflow-style: none; /* make scrollbar invisible on IE and Edge */
+	scrollbar-width: none; /* make scrollbar invisible on Firefox */
+	
 	width: 100%;
 	height: 100%;
+
+	background-color: #18141c;
+	border-radius: 0 0 10px 10px;
 }
 
 .room-messages-container::-webkit-scrollbar {

@@ -56,7 +56,6 @@ function Room() {
     
     socket.on('update-members', length => {
       setNumMembers(length);
-      console.log(length);
     });    
 
     socket.on('member-join', username => {
