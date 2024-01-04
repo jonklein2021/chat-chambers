@@ -1,18 +1,31 @@
-require('dotenv');
+const express = require('express');
+const http = require('http');
+const socket_io = require('socket.io');
+require('dotenv').config();
 
+const app = express();
+
+const server = http.createServer(app);
 const port = process.env.PORT || 9000;
-const io = require('socket.io')(port, {
-  cors: { origin: ['https://i-socket.netlify.app:3000', 'https://i-socket.netlify.app/', 'http://localhost:3000'] }
+
+const io = socket_io(server, {
+  cors: {
+    origin: [process.env.CLIENT_URL, 'http://localhost:3000'],
+  },
 });
 
-console.log('Server listening on port', port);
+app.get('/', (req, res) => {
+  res.send('Server is running');
+});
+
+server.listen(port, () => {
+  console.log('Server listening on port', port);
+});
 
 // get all sockets in a room
-async function getSockets(room) {
-  return await io.in(room).fetchSockets();
-}
+const getSockets = async room => await io.in(room).fetchSockets();
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
   console.log('Socket connected:', socket.id);
 
   socket.on('disconnecting', async () => {
@@ -27,13 +40,13 @@ io.on('connection', socket => {
 
     io.to(room).emit('member-leave', username);
     io.to(room).emit('update-members', members.length - 1);
-  })
+  });
 
   socket.on('disconnect', () => {
     console.log('Socket disconnected:', socket.id);
   });
 
-  socket.on('join-room', async room => {
+  socket.on('join-room', async (room) => {
     console.log(`${socket.id} joined room ${room}`);
     socket.join(room);
 
@@ -43,27 +56,27 @@ io.on('connection', socket => {
     io.to(room).emit('member-join', socket.data.username);
   });
 
-  socket.on('request-members', async room => {
+  socket.on('request-members', async (room) => {
     const sockets = await getSockets(room);
     io.to(room).emit('update-members', sockets.length);
-  })
+  });
 
   socket.on('set-username', async (username, room, callback) => {
     // get usernames of all sockets in this room
     const sockets = await getSockets(room);
-    const usernames = sockets.map(s => s.data.username);
+    const usernames = sockets.map((s) => s.data.username);
 
-    if (usernames.find(u => u === username)) {
+    if (usernames.find((u) => u === username)) {
       // username already exists
       callback(false);
     } else {
       socket.data.username = username; // store for later use
       callback(true);
     }
-  })
+  });
 
   socket.on('send-message', async (room, username, message) => {
-    console.log(`[${room}] ${username} (${socket.id}): ${message}`);
+    console.log(`[${room}] ${username}: ${message}`);
     socket.to(room).emit('load-message', username, message);
   });
-}); 
+});
