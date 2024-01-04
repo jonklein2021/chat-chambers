@@ -58,7 +58,3 @@
 .app-join-container {
     display: flex;
 }
-
-.app-gen-name:hover {
-    cursor: pointer;
-}

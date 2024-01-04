@@ -8,6 +8,7 @@ import Error from '../../components/error/Error';
 
 // styles
 import './App.css';
+import Footer from '../../components/footer/Footer';
 
 function App() {
   const [roomCode, setRoomCode] = useState(null);
@@ -16,18 +17,6 @@ function App() {
   const inputRef = useRef(null);
 
   const navigate = useNavigate();
-
-  async function handleCreateRoom() {
-    setStatus('loading');
-
-    const res = await fetch('https://random-word-api.herokuapp.com/word?number=5&length=4');
-    const data = await res.json();
-
-    inputRef.current.value = data.join('-'); // update input field
-    setRoomCode(data.join('-'));
-
-    setStatus(null);
-  }
 
   function handleJoinRoom(e) {
     e.preventDefault();
@@ -60,8 +49,8 @@ function App() {
           <input placeholder='Enter room code' ref={inputRef} onChange={e => setRoomCode(e.target.value)} />
           <button type='submit' disabled={!roomCode} className='app-join-button'>Join</button>
         </form>
-        <p>Need some inspiration? Click <b className='app-gen-name' onClick={handleCreateRoom}>me!</b></p>
       </div>
+      <Footer />
     </div>
   );
 }
