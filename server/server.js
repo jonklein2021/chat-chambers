@@ -15,16 +15,17 @@ const io = socket_io(server, {
 });
 
 app.get('/', (req, res) => {
-  res.send('Server is running');
+  res.send('OK');
 });
 
 server.listen(port, () => {
   console.log('Server listening on port', port);
 });
 
-// get all sockets in a room
-const getSockets = async room => await io.in(room).fetchSockets();
+// function to get all sockets in a room
+const getSockets = async (room) => await io.in(room).fetchSockets();
 
+// socket.io event listeners
 io.on('connection', (socket) => {
   console.log('Socket connected:', socket.id);
 
@@ -34,7 +35,7 @@ io.on('connection', (socket) => {
     const username = socket.data.username; // username of socket
     const room = roomsIter.next().value; // room that socket left
 
-    console.log(`${username} (${socket.id}) left room ${room}`);
+    console.log(`${socket.id} left ${room}`);
 
     const members = await getSockets(room);
 
@@ -47,7 +48,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('join-room', async (room) => {
-    console.log(`${socket.id} joined room ${room}`);
+    console.log(`${socket.id} joined ${room}`);
     socket.join(room);
 
     // update new headcount
@@ -64,9 +65,9 @@ io.on('connection', (socket) => {
   socket.on('set-username', async (username, room, callback) => {
     // get usernames of all sockets in this room
     const sockets = await getSockets(room);
-    const usernames = sockets.map((s) => s.data.username);
+    const usernames = sockets.map(s => s.data.username);
 
-    if (usernames.find((u) => u === username)) {
+    if (usernames.find(u => u === username)) {
       // username already exists
       callback(false);
     } else {
@@ -76,7 +77,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('send-message', async (room, username, message) => {
-    console.log(`[${room}] ${username}: ${message}`);
     socket.to(room).emit('load-message', username, message);
   });
 });
