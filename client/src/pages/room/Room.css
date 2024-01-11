@@ -4,7 +4,7 @@
 	justify-content: center;
 	font-size: 12pt;
 
-	height: 100vh
+	height: 99vh;
 }
 
 .room-left-container {
@@ -20,6 +20,15 @@
 	width: 100%;
 	text-align: left;
 	padding-left: 2em;
+}
+
+.room-buttons {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
+
+	margin-bottom: 1em;
 }
 
 .room-middle-container {

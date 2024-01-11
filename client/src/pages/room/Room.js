@@ -1,5 +1,5 @@
 // react
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 
 // socket.io
@@ -13,6 +13,7 @@ import SettingsButton from '../../components/settings-button/SettingsButton';
 // styles
 import './Room.css';
 import SettingsModal from '../../components/settings-modal/SettingsModal';
+import ExitButton from '../../components/exit-button/ExitButton';
 
 function Room() {
   const { room } = useParams();
@@ -22,15 +23,30 @@ function Room() {
   const [username, setUsername] = useState(null);
   const [numMembers, setNumMembers] = useState(0);
   const [log, setLog] = useState([]);
-  const [papyrusMode, setPapyrusMode] = useState(false);
-
-  const inputRef = useRef(null);
-  
-  const navigate = useNavigate();
+  const [font, setFont] = useState('Nunito');
 
   // modal states
   const [usernameModalOpen, setUsernameModalOpen] = useState(true);
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
+
+  const inputRef = useRef(null);
+
+  const navigate = useNavigate();
+
+  const fontStyles = useMemo(() => {
+    switch (font) {
+      case 'Nunito':
+        return { fontFamily: 'Nunito' };
+      case 'Courier New':
+        return { fontFamily: 'Courier New' };
+      case 'Comic Sans':
+        return { fontFamily: 'Comic Sans MS, Comic Sans, cursive' };
+      case 'Papyrus':
+        return { fontFamily: 'Papyrus' };
+      default:
+        return {};
+    }
+  }, [font]);
 
   // listen for username and room changes here
   useEffect(() => {
@@ -38,48 +54,39 @@ function Room() {
       navigate('/404');
       return;
     }
-    
+
     // get current number of members
     socket.emit('request-members', room);
-    
+
     if (username) socket.emit('join-room', room);
-    
+
   }, [navigate, room, username]);
-  
+
   // initialize listeners
   useEffect(() => {
     socket.connect();
-    
+
     socket.on('load-message', (sender, msg) => {
       setMessages(prev => [...prev, { sender, msg }]);
     });
-    
+
     socket.on('update-members', length => {
       setNumMembers(length);
-    });    
+    });
 
     socket.on('member-join', username => {
       if (username) setLog(oldLog => [...oldLog, username + ' joined the room'])
     });
-    
+
     socket.on('member-leave', username => {
       if (username) setLog(oldLog => [...oldLog, username + ' left the room'])
     });
 
   }, []);
 
-  // listen for setting changes
-  useEffect(() => {
-    if (papyrusMode) {
-      document.querySelector('body').classList.add('papyrus-mode');
-    } else {
-      document.querySelector('body').classList.remove('papyrus-mode');
-    }
-  }, [papyrusMode]);
-
   function handleSend(e) {
     e.preventDefault();
-    if (!newMessage) return; 
+    if (!newMessage) return;
 
     // send message to socket
     socket.emit('send-message', room, username, newMessage);
@@ -92,22 +99,34 @@ function Room() {
     setMessages(prev => [...prev, { sender: 'self', msg: newMessage }]);
   }
 
+  useEffect(() => {
+    console.log(font);
+  }, [font]);
+
+  function handleLeaveRoom() {
+    socket.disconnect();
+    navigate('/');
+  }
+
   return (
     <div className='room'>
       <UsernameModal isOpen={usernameModalOpen} onClose={setUsernameModalOpen} socket={socket} room={room} setUsername={setUsername} />
-      <SettingsModal isOpen={settingsModalOpen} onClose={setSettingsModalOpen} state={papyrusMode} setState={setPapyrusMode} />
+      <SettingsModal isOpen={settingsModalOpen} onClose={setSettingsModalOpen} font={font} setFont={setFont} fontStyles={fontStyles} />
       <div className='room-left-container'>
         <div className='room-top-left-label'>
           <p>Room: {room}</p>
           {username && <p># of members: {numMembers}</p>} {/* TODO: Get this to show and update on page load */}
           {username && <p>Username: {username}</p>}
         </div>
-        {username && <SettingsButton onClick={() => setSettingsModalOpen(true)} />}
+        <div className="room-buttons">
+          {username && <SettingsButton onClick={() => setSettingsModalOpen(true)} />}
+          {username && <ExitButton onClick={handleLeaveRoom} />}
+        </div>
       </div>
       <div className='room-middle-container'>
         <div className='room-messages-container'>
           {messages.map(m =>
-            <Message key={messages.indexOf(m)} sender={m.sender} content={m.msg} />
+            <Message key={messages.indexOf(m)} fontStyles={fontStyles} sender={m.sender} content={m.msg} />
           )}
         </div>
         {username &&
@@ -117,8 +136,8 @@ function Room() {
           </form>
         }
       </div>
-      <div className='room-right-container' onClick={() => console.log(log)}>
-        {log.map(msg => 
+      <div className='room-right-container'>
+        {log.map(msg =>
           <p key={log.indexOf(msg)}>{msg}</p>
         )}
       </div>

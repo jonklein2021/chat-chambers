@@ -3,7 +3,7 @@ import './Footer.css';
 
 function Footer() {
   return (
-    <div className='footer-content'>Jon Klein</div>
+    <div className='footer-content'>&copy; 2024 Jon Klein. All Rights Reserved.</div>
   );
 }
 

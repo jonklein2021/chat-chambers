@@ -3,12 +3,11 @@ import React, { useState } from 'react';
 
 // components
 import Error from '../error/Error';
-import Toggle from '../toggle/Toggle';
 
 // styles
 import './SettingsModal.css';
 
-function SettingsModal({ isOpen, onClose, state, setState }) {
+function SettingsModal({ isOpen, onClose, font, setFont, fontStyles }) {
   const [error, setError] = useState(null);
 
   return (
@@ -19,9 +18,20 @@ function SettingsModal({ isOpen, onClose, state, setState }) {
         }}>
           {error && <Error message={error} onClose={() => setError(null)} />}
           <div className='settings-modal-content'>
-            <div className='settings-modal-papyrus-container'>
-              Papyrus mode
-              <Toggle state={state} setState={setState} />
+            <div>
+              <label htmlFor='fontPicker'>Message Font: </label>
+              <select
+                id='fontPicker'
+                style={fontStyles}
+                className='settings-modal-font-picker'
+                value={font}
+                onChange={e => setFont(e.target.value)}
+              >
+                <option style={{ fontFamily: 'Nunito' }} value='Nunito'>Nunito</option>
+                <option style={{ fontFamily: 'Courier New' }} value='Courier New'>Courier New</option>
+                <option style={{ fontFamily: 'Comic Sans MS, Comic Sans, cursive' }} value='Comic Sans'>Comic Sans</option>
+                <option style={{ fontFamily: 'Papyrus' }} value='Papyrus'>Papyrus</option>
+              </select>
             </div>
           </div>
         </div>
