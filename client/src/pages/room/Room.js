@@ -24,6 +24,7 @@ function Room() {
   const [numMembers, setNumMembers] = useState(0);
   const [log, setLog] = useState([]);
   const [font, setFont] = useState('Nunito');
+  const [fontSize, setFontSize] = useState('12pt');
 
   // modal states
   const [usernameModalOpen, setUsernameModalOpen] = useState(true);
@@ -47,6 +48,23 @@ function Room() {
         return {};
     }
   }, [font]);
+
+  const fontSizeStyles = useMemo(() => {
+    switch (fontSize) {
+      case '12pt':
+        return { fontSize: '12pt' };
+      case '18pt':
+        return { fontSize: '18pt' };
+      case '24pt':
+        return { fontSize: '24pt' };
+      case '28pt':
+        return { fontSize: '28pt' };
+      case '36pt':
+        return { fontSize: '36pt' };
+      default:
+        return {};
+    }
+  }, [fontSize]);
 
   // listen for username and room changes here
   useEffect(() => {
@@ -99,19 +117,30 @@ function Room() {
     setMessages(prev => [...prev, { sender: 'self', msg: newMessage }]);
   }
 
-  useEffect(() => {
-    console.log(font);
-  }, [font]);
-
   function handleLeaveRoom() {
     socket.disconnect();
     navigate('/');
   }
 
   return (
-    <div className='room'>
-      <UsernameModal isOpen={usernameModalOpen} onClose={setUsernameModalOpen} socket={socket} room={room} setUsername={setUsername} />
-      <SettingsModal isOpen={settingsModalOpen} onClose={setSettingsModalOpen} font={font} setFont={setFont} fontStyles={fontStyles} />
+    <div className='room' style={{ fontSize }}>
+      <UsernameModal
+        isOpen={usernameModalOpen}
+        onClose={setUsernameModalOpen}
+        socket={socket}
+        room={room}
+        setUsername={setUsername}
+      />
+      <SettingsModal
+        isOpen={settingsModalOpen}
+        onClose={setSettingsModalOpen}
+        font={font}
+        setFont={setFont}
+        fontStyles={fontStyles}
+        fontSize={fontSize}
+        setFontSize={setFontSize}
+        fontSizeStyles={fontSizeStyles}
+      />
       <div className='room-left-container'>
         <div className='room-top-left-label'>
           <p>Room: {room}</p>
@@ -126,7 +155,7 @@ function Room() {
       <div className='room-middle-container'>
         <div className='room-messages-container'>
           {messages.map(m =>
-            <Message key={messages.indexOf(m)} fontStyles={fontStyles} sender={m.sender} content={m.msg} />
+            <Message key={messages.indexOf(m)} sender={m.sender} content={m.msg} fontStyles={fontStyles} fontSizeStyles={fontSizeStyles} />
           )}
         </div>
         {username &&
